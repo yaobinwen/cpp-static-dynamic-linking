@@ -170,7 +170,7 @@ The demo `demo/simple-examples.cpp` implements the examples in [1].
 > and if it is an error for the symbol to remain undefined, then the option
 > `--require-defined` should be used instead.
 
-## References
+## 5. References
 
 - [1] [Library order in static linking](https://eli.thegreenplace.net/2013/07/09/library-order-in-static-linking)
 - [2] [`ld(1)` manpage](https://manpages.ubuntu.com/manpages/bionic/man1/ld.1.html)
