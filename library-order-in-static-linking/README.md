@@ -198,7 +198,25 @@ See the "Quiz 2" part in the test `simple_example_circular_deps_with_frodo` in
 > and if it is an error for the symbol to remain undefined, then the option
 > `--require-defined` should be used instead.
 
+`nm(1)` [3] lists symbols from object files which are helpful in debugging the problems.
+
+[4] mentions two options that can help debugging:
+
+- `-v`:
+
+> Print (on standard error output) the commands executed to run the stages of
+> compilation. Also print the version number of the compiler driver program and
+> of the preprocessor and the compiler proper.
+
+- `-###`:
+
+> Like `-v` except the commands are not executed and arguments are quoted
+unless they contain only alphanumeric characters or `./-_`. This is useful for
+shell scripts to capture the driver-generated command lines.
+
 ## 6. References
 
 - [1] [Library order in static linking](https://eli.thegreenplace.net/2013/07/09/library-order-in-static-linking)
 - [2] [`ld(1)` manpage](https://manpages.ubuntu.com/manpages/bionic/man1/ld.1.html)
+- [3] [`nm(1)` manpage](http://manpages.ubuntu.com/manpages/bionic/man1/nm.1.html)
+- [4] [`gcc(1)` manpage](http://manpages.ubuntu.com/manpages/bionic/man1/gcc.1.html)
