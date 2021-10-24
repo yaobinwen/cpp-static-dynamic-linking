@@ -1,6 +1,8 @@
 #pragma once
 
+#include <set>
 #include <string>
+#include <vector>
 
 /// A symbol that is exported or requested by the object files.
 struct Symbol
@@ -32,3 +34,7 @@ struct Symbol
     bool
     operator<(Symbol const &rhs) const;
 };
+
+/// Helper function: transform a std::set<Symbol> to std::vector<std::string>.
+std::vector<std::string>
+symbol_set_to_string_vector(std::set<Symbol> const &symbol_set);

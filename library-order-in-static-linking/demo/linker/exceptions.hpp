@@ -15,14 +15,14 @@ public:
 
     /// Copy assignment operator
     MultipleDefinitions &
-    operator = (MultipleDefinitions const &) = default;
+    operator=(MultipleDefinitions const &) = default;
 
     /// Move constructor
     MultipleDefinitions(MultipleDefinitions &&) = default;
 
     /// Move assignment operator
     MultipleDefinitions &
-    operator = (MultipleDefinitions &&) = default;
+    operator=(MultipleDefinitions &&) = default;
 
     /// Destructor
     ~MultipleDefinitions() = default;

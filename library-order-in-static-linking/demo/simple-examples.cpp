@@ -4,8 +4,52 @@
 #include "linker/symbol.hpp"
 #include <gtest/gtest.h>
 #include <boost/filesystem.hpp>
+#include <iostream>
 
 namespace bfs = boost::filesystem;
+
+/// Print the linker's states in the examples.
+class ExampleLinkerStatePrinter
+{
+public:
+    /// Constructor
+    ExampleLinkerStatePrinter(Linker const &linker) : m_linker(linker)
+    {
+        std::cout << std::string(10U, '-') << std::endl;
+    }
+
+    void
+    report_linker_states(size_t leading_spaces = 0)
+    {
+        std::string s(leading_spaces, ' ');
+        std::cout << s << m_linker.str() << std::endl;
+    }
+
+    void
+    print_actions(ObjectFileProcessing const &p, size_t leading_spaces = 0)
+    {
+        std::string s(leading_spaces, ' ');
+        std::cout << s << p.str() << std::endl;
+    }
+
+    void
+    print_actions(std::vector<ObjectFileProcessing> const &actions, size_t leading_spaces = 0)
+    {
+        for (auto const &a: actions)
+        {
+            print_actions(a, leading_spaces);
+        }
+    }
+
+    /// Destructor
+    ~ExampleLinkerStatePrinter()
+    {
+        std::cout << std::string(10U, '-') << std::endl;
+    }
+
+private:
+    Linker const &m_linker;
+};
 
 TEST(demos, simple_example_both_object_files)
 {
@@ -24,8 +68,13 @@ TEST(demos, simple_example_both_object_files)
     {
         // Linking `simple_main` and then `simple_func` can succeed.
         Linker linker;
-        linker.link(simple_main);
-        linker.link(simple_func);
+        ExampleLinkerStatePrinter p(linker);
+
+        p.print_actions(linker.link(simple_main));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(simple_func));
+        p.report_linker_states(4);
 
         std::set<Symbol> undefined = linker.report_undefined();
         EXPECT_TRUE(undefined.empty());
@@ -36,8 +85,13 @@ TEST(demos, simple_example_both_object_files)
         // because "these are object files, the linking order does not matter.
         // Object files are always taken into the link."
         Linker linker;
-        linker.link(simple_func);
-        linker.link(simple_main);
+        ExampleLinkerStatePrinter p(linker);
+
+        p.print_actions(linker.link(simple_func));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(simple_main));
+        p.report_linker_states(4);
 
         std::set<Symbol> undefined = linker.report_undefined();
         EXPECT_TRUE(undefined.empty());
@@ -64,8 +118,13 @@ TEST(demos, simple_example_libsimplefunc_a)
         // Linking the object file `simple_main.o` followed by the static
         // library `libsimplefunc.a` works.
         Linker linker;
-        linker.link(simple_main);
-        linker.link(libsimplefunc);
+        ExampleLinkerStatePrinter p(linker);
+
+        p.print_actions(linker.link(simple_main));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libsimplefunc));
+        p.report_linker_states(4);
 
         std::set<Symbol> undefined = linker.report_undefined();
         EXPECT_TRUE(undefined.empty());
@@ -75,8 +134,13 @@ TEST(demos, simple_example_libsimplefunc_a)
         // But linking the static library `libsimplefunc.a` first would result
         // in the error "undefined reference to 'func'".
         Linker linker;
-        linker.link(libsimplefunc);
-        linker.link(simple_main);
+        ExampleLinkerStatePrinter p(linker);
+
+        p.print_actions(linker.link(libsimplefunc));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(simple_main));
+        p.report_linker_states(4);
 
         std::set<Symbol> undefined = linker.report_undefined();
         EXPECT_EQ(undefined.size(), size_t(1));
@@ -116,9 +180,16 @@ TEST(demos, simple_example_circular_deps_1)
 
     {
         Linker linker;
-        linker.link(simple_main);
-        linker.link(libbar_dep);
-        linker.link(libfunc_dep);
+        ExampleLinkerStatePrinter p(linker);
+
+        p.print_actions(linker.link(simple_main));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libbar_dep));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libfunc_dep));
+        p.report_linker_states(4);
 
         std::set<Symbol> undefined = linker.report_undefined();
         EXPECT_EQ(undefined.size(), size_t(1));
@@ -126,10 +197,18 @@ TEST(demos, simple_example_circular_deps_1)
     }
 
     {
+        // Quiz 1
         Linker linker;
-        linker.link(simple_main);
-        linker.link(libfunc_dep);
-        linker.link(libbar_dep);
+        ExampleLinkerStatePrinter p(linker);
+
+        p.print_actions(linker.link(simple_main));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libfunc_dep));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libbar_dep));
+        p.report_linker_states(4);
 
         std::set<Symbol> undefined = linker.report_undefined();
         EXPECT_TRUE(undefined.empty());
@@ -175,9 +254,16 @@ TEST(demos, simple_example_circular_deps_with_frodo)
 
     {
         Linker linker;
-        linker.link(simple_main);
-        linker.link(libfunc_dep);
-        linker.link(libbar_dep);
+        ExampleLinkerStatePrinter p(linker);
+
+        p.print_actions(linker.link(simple_main));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libfunc_dep));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libbar_dep));
+        p.report_linker_states(4);
 
         std::set<Symbol> undefined = linker.report_undefined();
         EXPECT_EQ(undefined.size(), size_t(1));
@@ -186,12 +272,41 @@ TEST(demos, simple_example_circular_deps_with_frodo)
 
     {
         Linker linker;
-        linker.link(simple_main);
-        linker.link(libbar_dep);
-        linker.link(libfunc_dep);
+        ExampleLinkerStatePrinter p(linker);
+
+        p.print_actions(linker.link(simple_main));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libbar_dep));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libfunc_dep));
+        p.report_linker_states(4);
 
         std::set<Symbol> undefined = linker.report_undefined();
         EXPECT_EQ(undefined.size(), size_t(1));
         EXPECT_TRUE(undefined.find(Symbol("bar")) != undefined.end());
+    }
+
+    {
+        // Quiz 2: Even providing `libbar_dep` twice wouldn't help.
+        Linker linker;
+        ExampleLinkerStatePrinter p(linker);
+
+        p.print_actions(linker.link(simple_main));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libbar_dep));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libfunc_dep));
+        p.report_linker_states(4);
+
+        p.print_actions(linker.link(libbar_dep));
+        p.report_linker_states(4);
+
+        std::set<Symbol> undefined = linker.report_undefined();
+        EXPECT_EQ(undefined.size(), size_t(1));
+        EXPECT_TRUE(undefined.find(Symbol("frodo")) != undefined.end());
     }
 }

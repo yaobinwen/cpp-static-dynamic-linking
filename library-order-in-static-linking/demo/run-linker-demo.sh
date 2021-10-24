@@ -6,6 +6,7 @@ g++ -o linker-demo.exe \
   ./linker/exceptions.cpp \
   ./linker/linker.cpp \
   ./linker/object_file.cpp \
+  ./linker/processing.cpp \
   ./linker/static_lib.cpp \
   ./linker/symbol.cpp \
   linker-demo.cpp \

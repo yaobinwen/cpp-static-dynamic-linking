@@ -143,7 +143,35 @@ The demo `demo/linker-demo.cpp` implements the experiment in `static-lib-rescann
 
 The demo `demo/simple-examples.cpp` implements the examples in [1].
 
-## 4. Other Takeaways
+## 4. The Quizzes
+
+### 4.1 Quiz 1
+
+In [1], the author writes:
+
+> However, the other order does work:
+>
+> ```
+> $ gcc  simplemain.o -L. -lfunc_dep -lbar_dep
+> $ ./a.out ; echo $?
+> 4
+> ```
+>
+> Quiz: can you figure out why?
+
+See the "Quiz 1" part in the test `simple_example_circular_deps_1` in
+`simple-examples.cpp`.
+
+### 4.2 Quiz 2
+
+In [1], the author writes:
+
+> Another quiz: will the same trick work providing `-lbar_dep` twice? Why not?
+
+See the "Quiz 2" part in the test `simple_example_circular_deps_with_frodo` in
+`simple-examples.cpp`.
+
+## 5. Other Takeaways
 
 [1] mentions two other options in [2] that can help resolve the dependency issue:
 
@@ -170,7 +198,7 @@ The demo `demo/simple-examples.cpp` implements the examples in [1].
 > and if it is an error for the symbol to remain undefined, then the option
 > `--require-defined` should be used instead.
 
-## 5. References
+## 6. References
 
 - [1] [Library order in static linking](https://eli.thegreenplace.net/2013/07/09/library-order-in-static-linking)
 - [2] [`ld(1)` manpage](https://manpages.ubuntu.com/manpages/bionic/man1/ld.1.html)

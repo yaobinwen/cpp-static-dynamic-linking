@@ -1,10 +1,12 @@
 #pragma once
 
 #include "object_file.hpp"
+#include "processing.hpp"
 #include "static_lib.hpp"
 #include "symbol.hpp"
-
 #include <set>
+#include <string>
+#include <vector>
 
 /// The linker that demonstrates the linking algorithm.
 class Linker
@@ -17,12 +19,24 @@ public:
     ~Linker();
 
     /// Link an object file.
-    void
+    ObjectFileProcessing
     link(ObjectFile const &obj_file);
 
     /// Link a static library.
-    void
+    std::vector<ObjectFileProcessing>
     link(StaticLib const &static_lib);
+
+    /// Return the current states as a string for representation.
+    std::string
+    str() const;
+
+    /// Return all the processing steps.
+    std::vector<ObjectFileProcessing>
+    get_all_processing_steps() const;
+
+    /// Return the last processing step.
+    ObjectFileProcessing
+    get_last_processing_step() const;
 
     /// Report undefined symbols.
     std::set<Symbol>
@@ -36,4 +50,6 @@ private:
 
     std::set<Symbol> m_exported;
     std::set<Symbol> m_undefined;
+
+    std::vector<ObjectFileProcessing> m_processing;
 };
