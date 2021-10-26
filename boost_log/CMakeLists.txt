@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
 
-include(CMakePrintHelpers)
-
 project(boost_log CXX)
 
 # Compile as C++17.
