@@ -9,7 +9,7 @@ This repository has code to demonstrate:
 
 ## 2. Static & Dynamic Linking
 
-The code is in the current directory.
+The code is in the [current directory](https://github.com/yaobinwen/cpp-static-dynamic-linking).
 
 The `run-g++` shell scripts show how to link libraries in different ways:
 
@@ -26,10 +26,10 @@ The `CMakeLists.txt` has code that does the same using `CMake`.
 
 This sub-directory addresses the problem that building programs with `boost::log` in `CMake` with static linking may result in link errors.
 
-The code is in the sub-directory `boost_log`. See the `README.md` for more details.
+The code is in the [sub-directory `boost_log`](https://github.com/yaobinwen/cpp-static-dynamic-linking/tree/master/boost_log). See the [`README.md`](./boost_log/README.md) for more details.
 
 ## 4. Library Order in Static Linking
 
 This sub-directory is an additional resource of understanding the article [Library order in static linking](https://eli.thegreenplace.net/2013/07/09/library-order-in-static-linking) which helps you to understand why link errors happens on static libraries and how to debug them.
 
-The code is in the sub-directory `library-order-in-static-linking`. See the `README.md` for more details.
+The code is in the sub-directory [`library-order-in-static-linking`](https://github.com/yaobinwen/cpp-static-dynamic-linking/tree/master/library-order-in-static-linking). See the [`README.md`](./library-order-in-static-linking/README.md) for more details.
